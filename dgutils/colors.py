@@ -17,6 +17,22 @@ resonant = ["#2078B5", "#FF7F0F", "#2CA12C", "#D72827", "#9467BE", "#8C574B",
             "#98E08B", "#FF9896", "#C6B1D6", "#C59D94", "#F8B7D3", "#C8C8C8", 
            "#DCDC8E", "#9EDAE6"]*2
 
+utk = ['#FF8200', '#FFFFFF', '#58595B', '#00746F', '#E65933', '#006C93',
+       '#F0EDE3', '#517C96', '#8D2048', '#754A7E', '#FED535', '#A7A9AC',
+       '#579584', '#B9E1E2', '#705550', '#EE3E80', '#ABC178', '#2197A9',
+       '#EBEA64', '#58595B', '#333333', '#006C93', '#F6F6F6', '#E0E0E0',
+       '#CACACA', '#B6B6B6'] 
+
+utk_colors = {'Tennessee Orange': '#FF8200', 'White': '#FFFFFF', 'Smokey':
+              '#58595B', 'Valley': '#00746F', 'Torch': '#E65933', 'Globe':
+              '#006C93', 'Limestone': '#F0EDE3', 'River': '#517C96', 'Leconte':
+              '#8D2048', 'Regalia': '#754A7E', 'Sunsphere': '#FED535', 'Rock':
+              '#A7A9AC', 'Legacy': '#579584', 'Summitt': '#B9E1E2', 'Buckskin':
+              '#705550', 'Energy': '#EE3E80', 'Switchgrass': '#ABC178',
+              'Fountain': '#2197A9', 'Eureka!': '#EBEA64', 'Smokey X':
+              '#333333', 'Gray 1': '#F6F6F6', 'Gray 2': '#E0E0E0', 'Gray 3':
+              '#CACACA', 'Gray 4': '#B6B6B6'}
+
 guzik = ['#818181','#6198c9','#c0e7f6','#f1f293','#fec06a','#ed5732','#57af5e','#9a6ead']*2
 guzikd = {'grey':'#818181','blue':'#6198c9', 'lightblue':'#c0e7f6',
           'yellow':'#f1f293', 'orange':'#fec06a', 'red':'#ed5732', 
