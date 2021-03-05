@@ -5,7 +5,7 @@ with open('README.md') as f:
 
 setuptools.setup(
     name='dgutils',
-    version='0.1.0',
+    version='0.2.0',
     packages=setuptools.find_packages(),
     license='MIT',
     description='A python package implenting useful utilities used by the Del Maestro Group.',
