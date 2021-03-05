@@ -112,7 +112,7 @@ def rgb_to_hex(value):
 
 #-------------------------------------------------------------------------------
 # https://www.viget.com/articles/equating-color-and-transparency
-def get_alpha_hex(value,alpha):
+def get_alpha_hex(value,alpha, real=False):
     '''Convert a hex color to an equivalent non-transparent version.'''
 
     #first we get the rgb
@@ -121,7 +121,11 @@ def get_alpha_hex(value,alpha):
     # apply the transparency
     target = [alpha*k + (0.999-alpha) for k in rgb] 
 
-    return rgb_to_hex(target)
+    if not real:
+        return rgb_to_hex(target)
+    else:
+        transparent = str(hex(int(alpha*255)))[-2:]
+        return value + transparent
 
 #-------------------------------------------------------------------------------
 def get_color_name(input_hex):
