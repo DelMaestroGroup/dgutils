@@ -3,7 +3,7 @@ import sys, os
 from math import *
 
 import subprocess 
-from colors import hex_to_rgb
+from .colors import hex_to_rgb
 import numpy as np
 
 # -----------------------------------------------------------------------------------
