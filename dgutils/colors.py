@@ -46,6 +46,32 @@ def get_cycle_colors():
     return plt.rcParams['axes.prop_cycle'].by_key()['color']
 
 #-------------------------------------------------------------------------------
+def colorize_plot(ax,color='#636363', cbar=None, leg=None):
+    '''Color and modify plot for presentation purposes.'''
+
+    import matplotlib.pyplot as plt
+    
+    # Set all the main axis properties
+    for loc in ['bottom','top','left','right']:
+        ax.spines[loc].set_color(color)
+    ax.xaxis.label.set_color(color)
+    ax.yaxis.label.set_color(color)
+    ax.tick_params(which='both', colors=color)
+    
+    # repeat for a possible colorbar
+    if cbar:
+        cbar.ax.tick_params(color=color)
+        cbar.outline.set_color(color) 
+        cbar.ax.yaxis.label.set_color(color)
+        cbar.ax.xaxis.label.set_color(color)
+        cbar.ax.tick_params(which='both', colors=color)
+    
+    # repeat for a possible legend
+    if leg:
+        plt.setp(legend.get_texts(), color=color)
+        leg._legend_title_box._text.set_color(color)
+
+#-------------------------------------------------------------------------------
 def view_colors(colors_,color_names = None,figsize=(8,2)):
     '''Visualize Colors.'''
 
