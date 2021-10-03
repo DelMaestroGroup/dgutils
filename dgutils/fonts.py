@@ -2,6 +2,7 @@
 
 import matplotlib as mpl
 import matplotlib.font_manager as fm
+import os
 
 def set_custom_font(font_path, name='custom', labelweight='light'):
     '''Set a custom font to be used for plotting in matplotlib.
