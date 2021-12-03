@@ -2,6 +2,9 @@
 
 All notable changes to the `dgutils` library  are documented in this file.
 
+## 3.3.4 (2021-12-03)
+- updated `savehtml.py` to reflect changed command line options for nbconvert 
+
 ## 0.2.5 (2021-08-04)
 - added a new function `colorize_plot` to change the color of all components in
   matplotlib plot

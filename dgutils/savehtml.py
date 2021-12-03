@@ -34,6 +34,6 @@ def save():
             # check if we need to regenerate the html file 
             html = name + '.html'
             if not os.path.isfile('html/%s'%html) or (modified(notebook) > modified('html/%s'%html)):
-                subprocess.call(['jupyter','nbconvert',notebook])
+                subprocess.call(['jupyter','nbconvert','--to','html',notebook])
                 subprocess.call(['mv',html,'html/%s'%html])
                 
