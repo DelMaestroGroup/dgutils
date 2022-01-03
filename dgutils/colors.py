@@ -68,7 +68,7 @@ def colorize_plot(ax,color='#636363', cbar=None, leg=None):
     
     # repeat for a possible legend
     if leg:
-        plt.setp(legend.get_texts(), color=color)
+        plt.setp(leg.get_texts(), color=color)
         leg._legend_title_box._text.set_color(color)
 
 #-------------------------------------------------------------------------------
