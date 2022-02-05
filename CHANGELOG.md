@@ -2,6 +2,9 @@
 
 All notable changes to the `dgutils` library  are documented in this file.
 
+## 0.3.6 (2022-02-05)
+- updated dependencies
+
 ## 0.3.5 (2022-01-03)
 - added a new font properties object getter
 
