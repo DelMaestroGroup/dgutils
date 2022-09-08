@@ -46,6 +46,11 @@ def get_cycle_colors():
     return plt.rcParams['axes.prop_cycle'].by_key()['color']
 
 #-------------------------------------------------------------------------------
+
+# For future -- need to update to check if ax is iterable
+# from collections.abc import Iterable
+# if isinstance(e, Iterable):
+# see: https://stackoverflow.com/a/1952481
 def colorize_plot(ax,color='#636363', cbar=None, leg=None):
     '''Color and modify plot for presentation purposes.'''
 

@@ -2,6 +2,9 @@
 
 All notable changes to the `dgutils` library  are documented in this file.
 
+## 3.3.5 (2022-09-08)
+- added structure to iterate over axes when colorizing, not yet implemented
+
 ## 3.3.4 (2021-12-03)
 - updated `savehtml.py` to reflect changed command line options for nbconvert 
 
