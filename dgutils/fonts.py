@@ -4,6 +4,7 @@ import matplotlib as mpl
 import matplotlib.font_manager as fm
 import os
 
+# -----------------------------------------------------------------
 def set_custom_font(font_path, name='custom', labelweight='light'):
     '''Set a custom font to be used for plotting in matplotlib.
        font_path : the full path to a .ttf font file.
@@ -22,5 +23,18 @@ def set_custom_font(font_path, name='custom', labelweight='light'):
         mpl.rcParams['mathtext.tt'] = f'{fe.name}:monospace'
         mpl.rcParams['axes.labelweight'] = labelweight
         mpl.rcParams['font.sans-serif'] = fe.name
+    else:
+        print(f'Font: {font_path} not found\n')
+
+# -----------------------------------------------------------------
+def get_custom_font_props(font_path):
+    '''Get a custon font properties object based on a user supplied
+       font path.
+
+       font_path : the full path to a .ttf font file.
+    '''
+
+    if os.path.isfile(font_path):
+        return fm.FontProperties(fname=font_path)
     else:
         print(f'Font: {font_path} not found\n')
