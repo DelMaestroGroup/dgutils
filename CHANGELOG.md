@@ -2,6 +2,9 @@
 
 All notable changes to the `dgutils` library  are documented in this file.
 
+## 0.3.9 (2023-08-01)
+- added ability to auto-crop image via "auto_crop" option; default is no
+
 ## 0.3.8 (2023-08-01)
 - Updated pypov with new get_color functionality
 - added image_map class

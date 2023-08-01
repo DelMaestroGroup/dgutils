@@ -5,6 +5,7 @@ from math import *
 import subprocess 
 from .colors import hex_to_rgb
 import numpy as np
+from PIL import Image
 
 # -----------------------------------------------------------------------------------
 def sweep(start,end,num_points,rad,color='#6bff2b',transmit=0.8):
@@ -88,7 +89,7 @@ def get_color(color, transmit=0.0):
     return color_string
 
 # -----------------------------------------------------------------------------------
-def pov_run(pov_file,width=1024,height=1,res="low"):
+def pov_run(pov_file,width=1024,height=1,res="low",auto_crop=False):
     
     low_res = ["-p"]
     
@@ -106,6 +107,13 @@ def pov_run(pov_file,width=1024,height=1,res="low"):
 
     # render the povray files
     subprocess.call([povcmd,povopts] + pov_opts + [pov_file])
+
+    # auto_crop the image ?
+    if auto_crop:
+        png_name = pov_file.replace('.pov','.png')
+        image = Image.open(png_name)
+        cropped = image.crop(image.getbbox())
+        cropped.save(png_name)
 
 # -----------------------------------------------------------------------------------
 class File:
