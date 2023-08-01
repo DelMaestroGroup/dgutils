@@ -76,7 +76,16 @@ def generate_linear_path(start,end,num_points):
     path = []
     for n in range(num_points):
         path.append(list(start + dv*n))
-    return path
+        return path
+
+ # -----------------------------------------------------------------------------------
+def get_color(color, transmit=0.0):
+    ''' Return a povray color string. '''
+
+    color_ = hex_to_rgb(color)
+    color_string = f"rgbt <{color_[0]:.2f},{color_[1]:.2f},{color_[2]:.2f},{transmit:.2f}>"
+
+    return color_string
 
 # -----------------------------------------------------------------------------------
 def pov_run(pov_file,width=1024,height=1,res="low"):
@@ -252,6 +261,11 @@ class Pigment(Item):
 class Finish(Item):
   def __init__(self,*opts,**kwargs):
     Item.__init__(self,"finish",(),opts,**kwargs)
+
+# -----------------------------------------------------------------------------------
+class Image_Map(Item):
+  def __init__(self,*opts,**kwargs):
+    Item.__init__(self,"image_map",(),opts,**kwargs)
 
 # -----------------------------------------------------------------------------------
 class Normal(Item):

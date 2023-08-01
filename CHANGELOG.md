@@ -2,6 +2,10 @@
 
 All notable changes to the `dgutils` library  are documented in this file.
 
+## 0.3.8 (2023-08-01)
+- Updated pypov with new get_color functionality
+- added image_map class
+
 ## 0.3.7 (2022-09-08)
 - added structure to iterate over axes when colorizing, not yet implemented
 
