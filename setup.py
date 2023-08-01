@@ -11,7 +11,7 @@ setuptools.setup(
     description='A python package implenting useful utilities used by the Del Maestro Group.',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    install_requires=['numpy','scipy','matplotlib','PIL'],
+    install_requires=['numpy','scipy','matplotlib','pillow'],
     python_requires='>=3.6',
     url='https://github.com/DelMaestroGroup/dgutils',
     author='Adrian Del Maestro',
