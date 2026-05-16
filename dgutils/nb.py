@@ -1,31 +1,29 @@
 # A simple helper which collects notebook useful methods
 
 import ipywidgets as widgets
-from IPython.display import display
+from IPython.display import display, HTML, clear_output
 import __main__
 
-_banner = None
+_banner_out = widgets.Output()
+_displayed = False
 
 
 def init_banner():
-    global _banner
+    global _displayed
 
-    if _banner is None:
-        _banner = widgets.HTML(value="")
-        display(_banner)
+    if not _displayed:
+        display(_banner_out)
+        _displayed = True
 
-    return _banner
+    return _banner_out
 
 
 def set_variable(name, value, units="Å"):
-    global _banner
-
-    if _banner is None:
-        _banner = init_banner()
+    init_banner()
 
     setattr(__main__, name, value)
 
-    _banner.value = f"""
+    html = f"""
     <div style='background-color:green;
                 color:white;
                 font-size:20px;
@@ -35,3 +33,7 @@ def set_variable(name, value, units="Å"):
         ⚠️ {name} = {value} {units} ⚠️
     </div>
     """
+
+    with _banner_out:
+        clear_output(wait=True)
+        display(HTML(html))
