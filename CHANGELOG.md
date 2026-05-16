@@ -2,6 +2,9 @@
 
 All notable changes to the `dgutils` library  are documented in this file.
 
+## 0.4.0 (2026-05-16)
+- added `nb.py` with some simple scripts to improve notebooks
+
 ## 0.3.9 (2023-08-01)
 - added ability to auto-crop image via "auto_crop" option; default is no
 
