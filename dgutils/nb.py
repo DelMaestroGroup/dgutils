@@ -2,27 +2,27 @@
 
 import ipywidgets as widgets
 from IPython.display import display
+import __main__
 
-# Module-level state
 _banner = None
 
-def _ensure_banner():
+
+def init_banner():
     global _banner
 
     if _banner is None:
         _banner = widgets.HTML(value="")
         display(_banner)
 
+    return _banner
+
 
 def set_variable(name, value, units="Å"):
-    """
-    Set a global variable in the notebook namespace and display a banner.
-    """
+    global _banner
 
-    _ensure_banner()
+    if _banner is None:
+        _banner = init_banner()
 
-    # Inject into notebook globals
-    import __main__
     setattr(__main__, name, value)
 
     _banner.value = f"""
