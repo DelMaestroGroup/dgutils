@@ -2,7 +2,7 @@
 
 All notable changes to the `dgutils` library  are documented in this file.
 
-## 0.4.2 (2026-05-16)
+## 0.4.3 (2026-05-16)
 - added `nb.py` with some simple scripts to improve notebooks
 
 ## 0.3.9 (2023-08-01)
