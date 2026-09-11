@@ -19,8 +19,9 @@ def set_custom_font(font_path, name='custom', labelweight='light'):
         mpl.rcParams['mathtext.rm'] = f'{fe.name}:regular'
         mpl.rcParams['mathtext.it'] = f'{fe.name}:italic'
         mpl.rcParams['mathtext.bf'] = f'{fe.name}:bold'
-        mpl.rcParams['mathtext.sf'] = f'{fe.name}:sans'
-        mpl.rcParams['mathtext.tt'] = f'{fe.name}:monospace'
+        # Sans-serif and monospace are font families, not style suffixes.
+        mpl.rcParams['mathtext.sf'] = fe.name
+        mpl.rcParams['mathtext.tt'] = fe.name
         mpl.rcParams['axes.labelweight'] = labelweight
         mpl.rcParams['font.sans-serif'] = fe.name
     else:

@@ -2,6 +2,9 @@
 
 All notable changes to the `dgutils` library  are documented in this file.
 
+## 0.4.4 (2026-09-11)
+- fixed a font bug related to sans serif
+
 ## 0.4.3 (2026-05-16)
 - added `nb.py` with some simple scripts to improve notebooks
 
