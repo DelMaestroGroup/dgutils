@@ -1,12 +1,13 @@
 # A simple helper which collects notebook useful methods
 
-from IPython.display import display, HTML
 import __main__
 
 _DISPLAY_ID = "notebook_variable_banner"
 
 
 def set_variable(name, value, units="Å"):
+    from IPython.display import display, HTML
+
     setattr(__main__, name, value)
 
     html = f"""

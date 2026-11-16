@@ -74,7 +74,7 @@ def colorize_plot(ax,color='#636363', cbar=None, leg=None):
     # repeat for a possible legend
     if leg:
         plt.setp(leg.get_texts(), color=color)
-        leg._legend_title_box._text.set_color(color)
+        leg.get_title().set_color(color)
 
 #-------------------------------------------------------------------------------
 def view_colors(colors_,color_names = None,figsize=(8,2)):
@@ -102,10 +102,16 @@ def view_colors(colors_,color_names = None,figsize=(8,2)):
 def get_linear_colors(cmap,num_colors,reverse=False):
     '''Return num_colors colors in hex from the colormap cmap.'''
     
-    from matplotlib import cm
+    import matplotlib as mpl
     from matplotlib import colors as mplcolors
 
-    cmap = cm.get_cmap(cmap)
+    # The registry's get_cmap accepts names, None, and Colormap instances.
+    # Older Matplotlib releases may lack either the registry or this method.
+    get_cmap = getattr(getattr(mpl, 'colormaps', None), 'get_cmap', None)
+    if get_cmap is None:
+        from matplotlib import cm
+        get_cmap = cm.get_cmap
+    cmap = get_cmap(cmap)
 
     colors_ = []
     for n in np.linspace(0,1.0,num_colors):
@@ -132,13 +138,21 @@ def hex_to_rgb(value,transmit=None, full=False):
         return col + (transmit,)
 
 #-------------------------------------------------------------------------------
-def rgb_to_hex(value):
-    '''Convert a rgb tuple to a hex color string.'''
-    if value[0] < 1:
-        scale = 255
-    else:
-        scale = 1
-    rgb = [int(scale*k) for k in value]
+def rgb_to_hex(value, full=None):
+    '''Convert normalized (0-1) or byte-scale (0-255) RGB to hex.
+
+    In automatic mode, any RGB channel above 1 selects byte scale;
+    otherwise the channels are treated as normalized. Set full=True for
+    byte-scale input, including ambiguous values such as (1, 0, 0), or
+    full=False for normalized input. Fractional bytes are truncated as before.
+    An optional fourth alpha channel is ignored.
+    '''
+    rgb = value[:3]
+    if full is None:
+        full = any(channel > 1 for channel in rgb)
+    scale = 1 if full else 255
+    # Convert NumPy scalars before multiplying to avoid narrow-integer overflow.
+    rgb = [int(scale*float(k)) for k in rgb]
     return '#%02x%02x%02x' % (rgb[0],rgb[1],rgb[2]) 
 
 #-------------------------------------------------------------------------------
@@ -280,7 +294,8 @@ def get_color_name_lab(input_hex):
 
     # Convert from sRGB color spave to LAB color space
     # https://stackoverflow.com/questions/13405956/convert-an-image-rgb-lab-with-python
-    lab = np.zeros_like(rgb)
+    # Lab channels are signed and fractional, unlike the uint8 RGB input.
+    lab = np.zeros_like(rgb, dtype=float)
     for i,c in enumerate(rgb[0,:]):
         lab[0,i] = rgb2lab(c)
 

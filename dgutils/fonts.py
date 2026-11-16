@@ -12,7 +12,18 @@ def set_custom_font(font_path, name='custom', labelweight='light'):
     
     if os.path.isfile(font_path):
         fe = fm.FontEntry(fname=font_path,name=name)
-        fm.fontManager.ttflist.insert(0, fe) 
+        # Keep the caller's alias and give the most recent registration priority.
+        # addfont() uses the font's embedded family name instead of this alias.
+        fm.fontManager.ttflist.insert(0, fe)
+        cached_lookup = getattr(fm.fontManager, '_findfont_cached', None)
+        clear_cache = getattr(cached_lookup, 'cache_clear', None)
+        if clear_cache is not None:
+            clear_cache()
+        else:
+            # Matplotlib 2.x keeps its font lookup caches at module level.
+            legacy_cache = getattr(fm, '_lookup_cache', {}).get('ttf')
+            if legacy_cache is not None:
+                legacy_cache._lookup_cache.clear()
 
         mpl.rcParams['font.family'] = fe.name
         mpl.rcParams['mathtext.fontset'] = 'custom'

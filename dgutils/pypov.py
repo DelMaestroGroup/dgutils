@@ -3,6 +3,7 @@ import sys, os
 from math import *
 
 import subprocess 
+import shutil
 from .colors import hex_to_rgb
 import numpy as np
 from PIL import Image
@@ -68,16 +69,12 @@ def linear(r1,r2):
 
 # ----------------------------------------------------------------------------
 def generate_linear_path(start,end,num_points):
-    '''Generate a linear path of num_points between start and end. '''
+    '''Return evenly spaced points including start and end.
 
-    # generate the points
-    v = np.array(end) - np.array(start)
-    dv = v/(num_points-1)
-
-    path = []
-    for n in range(num_points):
-        path.append(list(start + dv*n))
-        return path
+    num_points must be a non-negative integer. Zero returns an empty list;
+    one returns only start. Each point is returned as a list.
+    '''
+    return np.linspace(start, end, num_points).tolist()
 
  # -----------------------------------------------------------------------------------
 def get_color(color, transmit=0.0):
@@ -89,9 +86,17 @@ def get_color(color, transmit=0.0):
     return color_string
 
 # -----------------------------------------------------------------------------------
-def pov_run(pov_file,width=1024,height=1,res="low",auto_crop=False):
-    
-    low_res = ["-p"]
+def pov_run(pov_file,width=1024,height=1,res="low",auto_crop=False,
+            *,executable=None,ini_file=None):
+    '''Render a scene with POV-Ray, optionally cropping the PNG output.
+
+    executable may be a command name or path. By default, search PATH,
+    then the historical ~/local/bin/povray location. With no ini_file,
+    POV-Ray uses its normal configuration discovery (including POVINI).
+    A failed render raises subprocess.CalledProcessError before cropping.
+    '''
+
+    pov_file = os.fspath(pov_file)
     
     if height == 1:
         height = int(3*width/4.0)
@@ -101,18 +106,27 @@ def pov_run(pov_file,width=1024,height=1,res="low",auto_crop=False):
     else:
         pov_opts = ["-p"]
 
-    HOME = os.environ['HOME']
-    povcmd = f'{HOME}/local/bin/povray' 
-    povopts = f'{HOME}/.povray/3.7/povray.ini'
+    if executable is None:
+        executable = (shutil.which('povray') or
+                      shutil.which(os.path.expanduser('~/local/bin/povray')))
+        if executable is None:
+            raise FileNotFoundError(
+                'POV-Ray was not found. Add povray to PATH or pass executable.')
+    else:
+        executable = os.path.expanduser(os.fspath(executable))
+
+    command = [executable]
+    if ini_file is not None:
+        command.append(os.path.expanduser(os.fspath(ini_file)))
 
     # render the povray files
-    subprocess.call([povcmd,povopts] + pov_opts + [pov_file])
+    subprocess.run(command + pov_opts + [pov_file], check=True)
 
     # auto_crop the image ?
     if auto_crop:
-        png_name = pov_file.replace('.pov','.png')
-        image = Image.open(png_name)
-        cropped = image.crop(image.getbbox())
+        png_name = os.path.splitext(pov_file)[0] + '.png'
+        with Image.open(png_name) as image:
+            cropped = image.crop(image.getbbox())
         cropped.save(png_name)
 
 # -----------------------------------------------------------------------------------
@@ -162,7 +176,7 @@ class Vector:
   def __str__(self):
     return "<%s>"%(", ".join([str(x)for x in self.v]))
   def __repr__(self):
-    return "Vector(%s)"%self.v
+    return "Vector(%s)"%(self.v,)
   def __mul__(self,other):
     return Vector( [r*other for r in self.v] )
   def __rmul__(self,other):
@@ -170,6 +184,10 @@ class Vector:
 
 # -----------------------------------------------------------------------------------
 class Item:
+  '''A POV-Ray item indexed by arguments followed by options.
+
+  Integer indices, including negative indices, address the combined sequence.
+  '''
   def __init__(self,name,args=[],opts=[],**kwargs):
     self.name = name
     args=list(args)
@@ -177,7 +195,7 @@ class Item:
       if type(args[i]) == tuple or type(args[i]) == list:
         args[i] = Vector(args[i])
     self.args = args
-    self.opts = opts
+    self.opts = list(opts)
     self.kwargs=kwargs
   def append(self, item):
     self.opts.append( item )
@@ -210,19 +228,16 @@ class Item:
     if name not in ["kwargs","args","opts","name"]:
       self.__dict__["kwargs"][name]=val
   def __setitem__(self,i,val):
+    if i < 0:
+      i += len(self.args) + len(self.opts)
+    if i < 0:
+      raise IndexError('Item index out of range')
     if i < len(self.args):
       self.args[i] = val
     else:
-      i += len(args)
-      if i < len(self.opts):
-        self.opts[i] = val
-  def __getitem__(self,i,val):
-    if i < len(self.args):
-      return self.args[i]
-    else:
-      i += len(args)
-      if i < len(self.opts):
-        return self.opts[i]
+      self.opts[i - len(self.args)] = val
+  def __getitem__(self,i):
+    return (self.args + self.opts)[i]
 
 # -----------------------------------------------------------------------------------
 class FunctionItem:

@@ -7,6 +7,7 @@ Export Jupyter notebooks as html files if the .ipynb has changed.
 import os
 import datetime
 import subprocess
+import sys
 
 def modified(filename):
     '''Get the modification time of a file. '''
@@ -34,6 +35,8 @@ def save():
             # check if we need to regenerate the html file 
             html = name + '.html'
             if not os.path.isfile('html/%s'%html) or (modified(notebook) > modified('html/%s'%html)):
-                subprocess.call(['jupyter','nbconvert','--to','html',notebook])
-                subprocess.call(['mv',html,'html/%s'%html])
+                subprocess.run([
+                    sys.executable, '-m', 'nbconvert', '--to', 'html',
+                    '--output-dir', 'html', os.path.abspath(notebook)
+                ], check=True)
                 

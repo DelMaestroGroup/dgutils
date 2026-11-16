@@ -5,13 +5,14 @@ with open('README.md') as f:
 
 setuptools.setup(
     name='dgutils',
-    version='0.4.4',
+    version='0.4.5',
     packages=setuptools.find_packages(),
     license='MIT',
     description='A python package implenting useful utilities used by the Del Maestro Group.',
     long_description=long_description,
     long_description_content_type='text/markdown',
     install_requires=['numpy','scipy','matplotlib','pillow'],
+    extras_require={'notebook': ['ipython', 'nbconvert']},
     python_requires='>=3.6',
     url='https://github.com/DelMaestroGroup/dgutils',
     author='Adrian Del Maestro',
